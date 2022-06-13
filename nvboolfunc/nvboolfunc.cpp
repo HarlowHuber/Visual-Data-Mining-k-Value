@@ -638,7 +638,14 @@ void nvboolfunc_t::set_input(const nvinput_t* const _input)
 			disk_data[i].parse_begun = false;
 		}
 
-		set_sizes();
+		// only works for binary vectors
+		//set_sizes();
+		
+		// set disk size of 
+		for (size_t i = 0; i < size; i++)
+		{
+			disk_data[i].xsize = (int)all_vectors[i].size();
+		}
 
 		// reset file position pointer
 		input->rewind();
