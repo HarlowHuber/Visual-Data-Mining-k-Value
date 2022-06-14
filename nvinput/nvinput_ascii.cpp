@@ -125,16 +125,10 @@ bool nvinput_ascii_file_t::eof(void)
 {
 	if (infile)
 	{
-		long int pos;
-		bit_vector_t v;
-		bool r = true;
-
-		pos = ftell(infile);
-		readnext(v);
-		if (!feof(infile)) r = false;
-		fseek(infile, pos, SEEK_SET);
-		return r;
+		if (feof(infile)) return true;
+		else return false;
 	}
+
 	return true;
 }
 

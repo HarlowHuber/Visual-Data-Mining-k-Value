@@ -825,7 +825,6 @@ void nvboolfunc_t::rewind(size_t i)
 
 void nvboolfunc_t::little_sort(void)
 {
-
 	if (!disk_data) return;
 
 	if (!is3d)
