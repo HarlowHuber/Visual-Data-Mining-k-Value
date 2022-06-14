@@ -214,6 +214,7 @@ size_t nvinput_groupfile_t::read_vector_size(void)
 
 bool nvinput_vectfile_t::readnext(bit_vector_t& dest)
 {
+	// only works if input file is free of newlines after the vectors
 	// vector file type is the simpliest type of all
 	// vector comes with value at the end, no space, just a \n at the end of each
 	bit_vector_t vect((size_t)0);

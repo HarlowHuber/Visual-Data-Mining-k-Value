@@ -1,0 +1,1 @@
+When using test file, white bar (smallest vector) is not displayed on disk 1.

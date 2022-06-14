@@ -32,8 +32,7 @@ nvboolfunc_t::nvboolfunc_t(void) :
 
 nvboolfunc_t::nvboolfunc_t(size_t _size) :
 	input(NULL),
-	kv_attributes(_size, 2),
-	all_vectors(_size + 1)
+	kv_attributes(_size, 2)
 {
 	size_t i;
 	size = _size + 1;
@@ -623,6 +622,9 @@ void nvboolfunc_t::set_input(const nvinput_t* const _input)
 			max_hamming_norm += max_vector[i];
 		}
 
+		all_vectors.resize(max_hamming_norm + 1);
+		all_vectors[max_hamming_norm].insert(std::pair<int, bit_vector_t>(calc_mb_value(max_vector), max_vector));
+
 		calculate_all_vectors(max_vector, max_hamming_norm, 0);
 
 		// create the disk_datas but not any inodes ...
@@ -843,18 +845,23 @@ void nvboolfunc_t::little_sort(void)
 			{
 				rewind(lvl);
 
-				for (size_t k = 0; k < all_vectors[lvl].size(); k++)
+				for (auto iter = all_vectors[lvl].begin(); iter != all_vectors[lvl].end(); iter++)
 				{
 					rewind(lvl);
 
 					while (cur.generic_pointer = get_next_inode(lvl)) // while there is an inode
 					{
-						if (cur.inode2d->bit_vector == all_vectors[lvl][k])
+						if (cur.inode2d->bit_vector == iter->second)
 						{
-							cur.inode2d->xpos = -((float)k) + ((float)disk_data[lvl].xsize) / 2.0f - 0.5f;
+							// subtracting -((float)disk_data[lvl].xsize) plots bar on left side
+							// base plots bar on right side
+							// how to subtract k???
+							cur.inode2d->xpos = -((float)nb) + ((float)disk_data[lvl].xsize) / 2.0f - 0.5f;
 							break;
 						}
 					}
+
+					nb++;
 				}
 
 				//rewind(lvl);
@@ -2175,7 +2182,6 @@ void nvboolfunc_t::mexpand(void)
 	}
 
 	// then sort all these guys
-
 	little_sort();
 }
 
@@ -2508,4 +2514,4 @@ void nvboolfunc_t::calc3dData(void)
 
 
 
-}
+};
