@@ -830,16 +830,11 @@ void nvboolfunc_t::little_sort(void)
 
 	if (!is3d)
 	{
-		size_t lvl; // level of disk
-		size_t* p = new size_t[size - 1];
-		size_t i, j, nb = 0;
-		bit_vector_t v0(size - 1, 0);	// vector initialized with all zeros
-		bit_vector_t biggest_vector(size - 1);	// the biggest vector for a particular Hamming Norm
 		generic_inode_t cur;
 
-		for (lvl = 0; lvl < size; lvl++)
+		for (size_t lvl = 0; lvl < size; lvl++)
 		{
-			nb = 0;
+			size_t pos = 0;
 
 			if (disk_data[lvl].inode.generic_pointer) // checks if there is data for the current disk
 			{
@@ -853,29 +848,14 @@ void nvboolfunc_t::little_sort(void)
 					{
 						if (cur.inode2d->bit_vector == iter->second)
 						{
-							// subtracting -((float)disk_data[lvl].xsize) plots bar on left side
-							// base plots bar on right side
-							// how to subtract k???
-							cur.inode2d->xpos = -((float)nb) + ((float)disk_data[lvl].xsize) / 2.0f - 0.5f;
+							// if pos = 0, then vector is plotted on farthest right position of disk
+							cur.inode2d->xpos = -((float)pos) + ((float)disk_data[lvl].xsize) / 2.0f - 0.5f;
 							break;
 						}
 					}
 
-					nb++;
+					pos++;
 				}
-
-				//rewind(lvl);
-
-				/*while (cur.generic_pointer = get_next_inode(lvl))
-				{
-					if (cur.inode2d->bit_vector == biggest_vector)
-					{
-						cur.inode2d->xpos = -((float)nb) + ((float)disk_data[lvl].xsize) / 2.0f - 0.5f;
-						break;
-					}
-				}*/
-
-				
 			}
 		}
 
@@ -962,8 +942,6 @@ void nvboolfunc_t::little_sort(void)
 				}
 			}
 		}*/
-
-		delete[] p;
 	}
 }
 
