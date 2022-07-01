@@ -25,7 +25,7 @@ typedef union __color_t
 	} unpacked;
 	unsigned long int upacked;  // packed color
 	long int packed;			  // packed color signed
-	unsigned  char b8_array[4]; // array of component
+	unsigned char b8_array[4]; // array of component
 } color_t;
 
 //This is one data set. One vector with a value (true/false).
@@ -165,13 +165,13 @@ typedef struct __disk_data_t
 class __declspec(dllexport) nvboolfunc_t
 {
 private:
-	std::vector<int> kv_attributes;								// array of k-values that represent the k-value for each vector attribute
-	std::vector<std::map<int, bit_vector_t, std::greater<int>>> all_vectors;	// all possible vectors given a vector of k-values, grouped by Hamming norm,
-																// and sorted from greatest to smallest
-																// sorted_vectors[Hamming norm][list of vectors][vector]
+	std::vector<int> kv_attributes;													// array of k-values that represent the k-value for each vector attribute
+	std::vector<std::multimap<int, bit_vector_t, std::greater<int>>> all_vectors;	// all possible vectors given a vector of k-values, grouped by Hamming norm,
+																					// and sorted from greatest to smallest
+																					// sorted_vectors[Hamming norm][list of vectors][vector]
 
 	// followering block of functions are implemented in nvboolfunc_vec_gen ("nvboolfunc vector generate")
-	void calculate_all_vectors(bit_vector_t max_vector, int max_hamming_norm, size_t max_vector_index);					// calculate all vectors smaller than a given threshold
+	void calculate_all_vectors(bit_vector_t max_vector, int max_hamming_norm, size_t max_vector_index);			// calculate all vectors smaller than a given threshold
 	int calc_mb_value(bit_vector_t vector);
 	// end nvboolfunc_vec_gen
 

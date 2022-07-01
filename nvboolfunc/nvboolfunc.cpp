@@ -570,12 +570,12 @@ void nvboolfunc_t::set_input(const nvinput_t* const _input)
 	if (input)
 	{
 		bool r;
-		unsigned int inputsize;
+		unsigned int dimensions;
 
 		input->init();
 
 		// to be changed for dynamic size changing
-		if ((inputsize = input->read_vector_size()) > 14)
+		if ((dimensions = input->read_vector_size()) > 14)
 		{
 			LPCWSTR ws1 = L"Vector Size over than 14\n is not yet implemented";
 			LPCWSTR ws2 = L"Sorry";
@@ -584,7 +584,7 @@ void nvboolfunc_t::set_input(const nvinput_t* const _input)
 			return;
 		}
 
-		if (inputsize != size - 1)
+		if (dimensions != size - 1)
 		{
 			LPCWSTR ws1 = L"input is not the correct size";
 			LPCWSTR ws2 = L"Sorry but ...";
@@ -593,7 +593,7 @@ void nvboolfunc_t::set_input(const nvinput_t* const _input)
 			return;
 		}
 
-		bit_vector_t vect(inputsize);
+		bit_vector_t vect(dimensions);
 		input->rewind();
 
 		// parse file for kv_attributes
@@ -602,7 +602,7 @@ void nvboolfunc_t::set_input(const nvinput_t* const _input)
 			input->readnext(vect);
 
 			// calculate the k-value for each attribute
-			for (int i = 0; i < inputsize; i++)
+			for (int i = 0; i < dimensions; i++)
 			{
 				if (vect[i] + 1 > kv_attributes[i])
 				{
@@ -613,10 +613,10 @@ void nvboolfunc_t::set_input(const nvinput_t* const _input)
 
 		//	generate all combos of vectors
 		//	iterate over every k-value attribute
-		bit_vector_t max_vector(inputsize);
+		bit_vector_t max_vector(dimensions);
 		int max_hamming_norm = 0;
 
-		for (int i = 0; i < inputsize; i++)
+		for (int i = 0; i < dimensions; i++)
 		{
 			max_vector[i] = kv_attributes[i] - 1;
 			max_hamming_norm += max_vector[i];
@@ -625,11 +625,12 @@ void nvboolfunc_t::set_input(const nvinput_t* const _input)
 		all_vectors.resize(max_hamming_norm + 1);
 		all_vectors[max_hamming_norm].insert(std::pair<int, bit_vector_t>(calc_mb_value(max_vector), max_vector));
 
-		calculate_all_vectors(max_vector, max_hamming_norm, 0);
+		calculate_all_vectors(max_vector, max_hamming_norm, dimensions - 1);
 
 		// create the disk_datas but not any inodes ...
 		// set size and disk data after max Hamming norm is determined
-		delete[] disk_data;
+		if (disk_data)delete[] disk_data;
+
 		size = max_hamming_norm + 1;
 		disk_data = new disk_data_t[size];
 
@@ -639,14 +640,24 @@ void nvboolfunc_t::set_input(const nvinput_t* const _input)
 			disk_data[i].inode.generic_pointer = NULL;
 			disk_data[i].parse_begun = false;
 		}
-
-		// only works for binary vectors
-		//set_sizes();
 		
 		// set disk size of 
 		for (size_t i = 0; i < size; i++)
 		{
 			disk_data[i].xsize = (int)all_vectors[i].size();
+		}
+
+		// set color array. delete if already exists
+		if (color_array) delete[] color_array;
+
+		color_array = new color_t * [size];
+
+		for (size_t i = 0; i < size; i++)
+		{
+			color_array[i] = new color_t[3];
+			get_color_at(color_array[i][0], i, size);
+			color_array[i][2].upacked = 0x00000000;
+			color_array[i][1].upacked = 0xffffffff;
 		}
 
 		// reset file position pointer
