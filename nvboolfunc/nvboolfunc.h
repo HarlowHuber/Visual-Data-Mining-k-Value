@@ -8,6 +8,7 @@
 #include <list>
 #include <vector>
 #include <map>
+#include <unordered_map>
 #include <iterator>
 
 #include "data3d.h"
@@ -174,6 +175,11 @@ private:
 	void calculate_all_vectors(bit_vector_t max_vector, int max_hamming_norm, size_t max_vector_index);			// calculate all vectors smaller than a given threshold
 	int calc_mb_value(bit_vector_t vector);
 	// end nvboolfunc_vec_gen
+
+	// hansel chain functions
+	void calculateHanselChains(int vector_dimension);
+	std::vector<std::vector<bit_vector_t>> genChains(int num, int vector_dimension, std::unordered_map<int, std::vector<std::vector<bit_vector_t>>> chain);
+	std::vector<std::vector<bit_vector_t>> hanselChainSet;
 
 	int factorial(int n);		// return n! (factorial)
 	int ncr(int n, int r);		// return n!/[(n-p)!p!]

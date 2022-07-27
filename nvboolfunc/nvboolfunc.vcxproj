@@ -167,6 +167,7 @@
     <ClCompile Include="data3d.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="nvboolfunc.cpp" />
+    <ClCompile Include="nvboolfunc_hc_gen.cpp" />
     <ClCompile Include="nvboolfunc_vec_gen.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

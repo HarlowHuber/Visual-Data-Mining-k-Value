@@ -1028,9 +1028,7 @@ void* nvboolfunc_t::safe_store(bit_vector_t& vect, bool value, bool is_fake, boo
 {
 	if (disk_data)
 	{
-
-		int i;
-		i = vect.getlevel();
+		int i = vect.getlevel();
 
 		if (disk_data[i].inode.generic_pointer)
 		{
@@ -1735,16 +1733,19 @@ int nvboolfunc_t::hansel_order_add(int xc, int y)
 		{
 			return (-xc + ((y + 1) >> 1));
 		}
-		else {
+		else 
+		{
 			return xc - (y >> 1);
 		}
 	}
-	else {
+	else 
+	{
 		if (y & 1)
 		{
 			return -xc - ((y - 1) >> 1);
 		}
-		else {
+		else 
+		{
 			return  xc + (y >> 1);
 		}
 	}
@@ -1757,7 +1758,7 @@ int nvboolfunc_t::hansel_order_add(int xc, int y)
 
 void nvboolfunc_t::hansel_place(bool expand)
 {
-	HanselChainSet* hchains = NULL;
+	//HanselChainSet* hchains = NULL;
 
 	if (size > 16)
 	{
@@ -1767,18 +1768,21 @@ void nvboolfunc_t::hansel_place(bool expand)
 		return;
 	}
 
-	hchains = new HanselChainSet(size - 1);
+	/*hchains = new HanselChainSet(size - 1);
+
 	if (!hchains)
 	{
 		LPCWSTR ws1 = L"Error in the HanselChainSet creation";
 		LPCWSTR ws2 = L"Import work error";
 		::MessageBox(NULL, ws1, ws2, MB_OK | MB_ICONERROR);
 		return;
-	}
+	}*/
 
 	// Now we create some usefull tools to browse the HanselChainSet object
 
-	HanselChain* hchain;
+	//HanselChain* hchain;
+
+	calculateHanselChains(size - 1);
 	bit_vector_t cur(size - 1);
 	data_inode2d_t* inode;
 
@@ -1793,7 +1797,38 @@ void nvboolfunc_t::hansel_place(bool expand)
 		places_offset[i] = hansel_order_add(0, disk_data[j].xsize);
 	}
 
-	for (i = 0; i < hchains->get_length(); i++)
+	for (i = 0; i < hanselChainSet.size(); i++)
+	{
+		std::vector<bit_vector_t> hanselChain = hanselChainSet[i];
+		l = hanselChain.size();
+		data_inode2d_t* last_inode = NULL;
+
+		for (j = 0; j < l; j++)
+		{
+			cur = hanselChain[j]; // cur is reference to a single vector in hchain
+			inode = (data_inode2d_t*)safe_store(cur, true, true, expand); // inode ia referenece to cur, which is referenced in disk_data, so below operations update disk_data
+
+			if (inode)
+			{
+				inode->xpos = (disk_data[cur.getlevel()].xsize & 1) ? 0.0f : -0.5f;
+				inode->xpos += (float)places_offset[l - 1];
+				inode->chain_nb = i;
+				inode->chain_len = l;
+				inode->chain_up = NULL;
+				inode->chain_dn = last_inode;
+
+				if (last_inode) last_inode->chain_up = inode;
+
+				last_inode = inode;
+			}
+		}
+
+		places_offset[l - 1] = hansel_order_add(places_offset[l - 1], 1);
+	}
+
+	delete[] places_offset;
+
+	/*for (i = 0; i < hchains->get_length(); i++)
 	{
 		hchain = (*hchains)[i];
 		l = hchain->retrieveLength();
@@ -1813,8 +1848,7 @@ void nvboolfunc_t::hansel_place(bool expand)
 				inode->chain_up = NULL;
 				inode->chain_dn = last_inode;
 
-				if (last_inode) 
-					last_inode->chain_up = inode;
+				if (last_inode) last_inode->chain_up = inode;
 
 				last_inode = inode;
 			}
@@ -1824,7 +1858,7 @@ void nvboolfunc_t::hansel_place(bool expand)
 	}
 
 	delete[] places_offset;
-	delete(hchains);
+	delete(hchains);*/
 	is_hansel_sorted = true;
 }
 

@@ -38,5 +38,8 @@
     <ClCompile Include="nvboolfunc_vec_gen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="nvboolfunc_hc_gen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
