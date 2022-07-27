@@ -2203,7 +2203,7 @@ void nvboolfunc_t::expand_inode(data_inode2d_t* inode, bool* consistency, bool p
 	}
 
 	sz = inode->bit_vector.get_size();
-	//debug = inode->bit_vector.get_string();
+	debug = inode->bit_vector.get_string();
 	inode->parsed = true;
 	for (i = 0; i < sz; i++)
 	{
