@@ -1782,8 +1782,8 @@ void nvboolfunc_t::hansel_place(bool expand)
 
 	//HanselChain* hchain;
 
-	calculateHanselChains(size - 1);
-	bit_vector_t cur(size - 1);
+	calculateHanselChains(kv_attributes.size());
+	bit_vector_t cur(kv_attributes.size());
 	data_inode2d_t* inode;
 
 	int* places_offset = new int[size];
@@ -1800,7 +1800,7 @@ void nvboolfunc_t::hansel_place(bool expand)
 	for (i = 0; i < hanselChainSet.size(); i++)
 	{
 		std::vector<bit_vector_t> hanselChain = hanselChainSet[i];
-		l = hanselChain.size();
+		l = hanselChain.size(); // what if size is 0? delete hansel chains???
 		data_inode2d_t* last_inode = NULL;
 
 		for (j = 0; j < l; j++)
@@ -1823,7 +1823,7 @@ void nvboolfunc_t::hansel_place(bool expand)
 			}
 		}
 
-		places_offset[l - 1] = hansel_order_add(places_offset[l - 1], 1);
+		places_offset[l - 1] = hansel_order_add(places_offset[l - 1], 1); // what if l is 0 ??? still do this ???
 	}
 
 	delete[] places_offset;

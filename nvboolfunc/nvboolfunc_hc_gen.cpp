@@ -64,6 +64,8 @@ std::vector<std::vector<bit_vector_t>> nvboolfunc_t::genChains(int num, int vect
                     b[i] = chains.at(j)[k][l][i - 1];
                 }
 
+                chains.at(j)[k][l] = b;
+
                 //chains.at(j)[k][l] = j + chains.at(j)[k][l]; // j used to be to_string because vector of strings
             }
         }

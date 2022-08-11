@@ -34,7 +34,7 @@ typedef union __color_t
 typedef struct __data_inode2d_t
 {
 	bit_vector_t bit_vector;	// the vector 
-	bool value;					// value of the data set
+	bool value;					// value of the data set (class)
 	bool is_fake;				// is this element a real or created ?
 	float xpos;					// position of the element in the disk
 	bool placed;				// used in intern to place an element (to be proiminent from others)
