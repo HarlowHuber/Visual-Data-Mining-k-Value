@@ -1826,7 +1826,7 @@ void nvboolfunc_t::hansel_place(bool expand)
 		places_offset[l - 1] = hansel_order_add(places_offset[l - 1], 1); // what if l is 0 ??? still do this ???
 	}
 
-	delete[] places_offset;
+	//delete[] places_offset;
 
 	/*for (i = 0; i < hchains->get_length(); i++)
 	{

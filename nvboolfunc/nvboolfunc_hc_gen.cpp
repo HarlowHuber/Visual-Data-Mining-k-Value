@@ -25,6 +25,7 @@ void nvboolfunc_t::calculateHanselChains(int vector_dimension)
             {
                 bit_vector_t b(vector_dimension);
                 b[0] = k;
+                b.setLevel();
                 baseChain.push_back(b);
             }
 
@@ -64,9 +65,8 @@ std::vector<std::vector<bit_vector_t>> nvboolfunc_t::genChains(int num, int vect
                     b[i] = chains.at(j)[k][l][i - 1];
                 }
 
+                b.setLevel();
                 chains.at(j)[k][l] = b;
-
-                //chains.at(j)[k][l] = j + chains.at(j)[k][l]; // j used to be to_string because vector of strings
             }
         }
     }
@@ -133,5 +133,4 @@ std::vector<std::vector<bit_vector_t>> nvboolfunc_t::genChains(int num, int vect
     std::vector<std::vector<bit_vector_t>> chainsTogether;
 
     return chainsTogether = chains.at(0);
-
 }

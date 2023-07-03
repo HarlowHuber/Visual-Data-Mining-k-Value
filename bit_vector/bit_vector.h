@@ -22,8 +22,6 @@
 // in this implementation the first bit is the left one, means, little endian ...
 class __declspec(dllexport) bit_vector_t
 {
-private:
-	void setLevel(void);					// set the level of the vector when initialized
 protected:
 	int* kv_array;							// array containing the k-value elements
 	size_t size;							// size of the vector
@@ -42,6 +40,7 @@ public:
 	~bit_vector_t(void);
 
 	int getlevel(void);
+	void setLevel(void);					// set the level of the vector when initialized
 
 	bool operator>(bit_vector_t& x);		// lattice order operators, to now if
 	bool operator<(bit_vector_t& x);		// two bitvector are not comparable, then

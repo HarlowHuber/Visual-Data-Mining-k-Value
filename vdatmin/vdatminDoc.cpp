@@ -23,7 +23,6 @@ bool is_first_wnd = true;
 // CvdatminDoc
 
 IMPLEMENT_DYNCREATE(CvdatminDoc, CDocument)
-
 BEGIN_MESSAGE_MAP(CvdatminDoc, CDocument)
 END_MESSAGE_MAP()
 
